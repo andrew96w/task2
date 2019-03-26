@@ -44,10 +44,6 @@ class NewsCustomComponent extends CBitrixComponent
         if ($_GET["sort"] == "RANK_TEN") {
             $this->arParams["SORT_VAR"] = 10;
         }
-        $this->arParams["IBLOCK_TYPE"] = trim($this->arParams["IBLOCK_TYPE"]);
-        if (strlen($this->arParams["IBLOCK_TYPE"]) <= 0)
-            $this->arParams["IBLOCK_TYPE"] = "news";
-        $this->arParams["IBLOCK_ID"] = trim($this->arParams["IBLOCK_ID"]);
         $this->arParams["SORT_BY1"] = trim($this->arParams["SORT_BY1"]);
         if (strlen($this->arParams["SORT_BY1"]) <= 0)
             $this->arParams["SORT_BY1"] = "ACTIVE_FROM";
@@ -109,7 +105,8 @@ class NewsCustomComponent extends CBitrixComponent
         try {
             $this->checkRequiredModules();
             Loader::includeModule('iblock');
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
         }
         $this->onPrepareComponentParams2();
         $this->getElements();

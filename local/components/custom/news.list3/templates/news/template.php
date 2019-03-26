@@ -45,7 +45,6 @@
 			$arItem["RANK_NEWS2"] = CRatings::GetRatingVoteResult("THEMES", $arItem['ID']);
 			$arItem["RANK_NEWS2"] = $arItem["RANK_NEWS2"]["TOTAL_POSITIVE_VOTES"];
 			CIBlockElement::SetPropertyValuesEx($arItem["ID"], false, array("RANK_NEWS2" => $arItem["RANK_NEWS2"]));
-			$classItem = "false";
 		?>
 		<li class="content-list__item content-list__item_post shortcuts_item" id="post_445140">
 		<article class="post post_preview">
@@ -58,7 +57,7 @@
 			</header>
 
 			<h2 class="post__title">
-				<?if($arParams["DISPLAY_NAME"]!="N" && $arItem["NAME"]):?>
+				<?if($arItem["NAME"]):?>
 					<a class="post__title_link" href="<?echo $arItem["DETAIL_PAGE_URL"]?>"><b>
 							<?echo $arItem["NAME"]?></b>
 					</a><br />
@@ -80,11 +79,11 @@
 							<?endif?>
 						</div>
 					</a><br>
-					<?if($arParams["DISPLAY_PREVIEW_TEXT"]!="N" && $arItem["PREVIEW_TEXT"]):?>
+					<?if($arItem["PREVIEW_TEXT"]):?>
 						<?echo $arItem["PREVIEW_TEXT"];?>
 					<?endif;?>
 				</div>
-				<?if($arParams["DISPLAY_NAME"]!="N" && $arItem["NAME"]):?>
+				<?if($arItem["NAME"]):?>
 					<a class="btn btn_x-large btn_outline_blue post__habracut-btn" href="<?=$arItem["DETAIL_PAGE_URL"]?>">Читать дальше →</a>
 				<?endif;?>
 			</div>

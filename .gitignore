@@ -11,6 +11,8 @@
 /login/
 /personal/
 /local/test/
+/local/test2/
+/local/templates/new_template/
 *.tar
 *.tar.gz
 *.tmp

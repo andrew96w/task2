@@ -14,11 +14,9 @@ $APPLICATION->SetTitle("Список новостей");
 		"CACHE_TYPE" => "A",
 		"COMPONENT_TEMPLATE" => "news",
 		"DETAIL_URL" => "element.php?ELEMENT_ID=#ELEMENT_ID#",
-		"DISPLAY_DATE" => "Y",
-		"DISPLAY_NAME" => "Y",
+		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"DISPLAY_PICTURE" => "Y",
-		"DISPLAY_PREVIEW_TEXT" => "Y",
-		"NEWS_COUNT" => "20",
+		"NEWS_COUNT" => "5",
 		"PREVIEW_TRUNCATE_LEN" => "",
 		"SORT_BY1" => "PROPERTY_RANK_NEWS2",
 		"SORT_ORDER1" => "DESC"
