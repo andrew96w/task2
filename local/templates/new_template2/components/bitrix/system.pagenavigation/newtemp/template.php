@@ -1,11 +1,14 @@
 <?
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+    die();
+}
 
 $ClientID = 'navigation_' . $arResult['NavNum'];
 
 if (!$arResult["NavShowAlways"]) {
-    if ($arResult["NavRecordCount"] == 0 || ($arResult["NavPageCount"] == 1 && $arResult["NavShowAll"] == false))
+    if ($arResult["NavRecordCount"] == 0 || ($arResult["NavPageCount"] == 1 && $arResult["NavShowAll"] == false)) {
         return;
+    }
 }
 ?>
 <div class="navigation">
@@ -43,11 +46,11 @@ if (!$arResult["NavShowAlways"]) {
     }
     ?>
     <div class="navigation-arrows arrows-pagination__item-link">
-        <span class="arrow">&larr;</span><span class="ctrl"></span>&nbsp;<? if ($bPrevDisabled):?><span
+        <span class="arrow">&larr;</span><span class="ctrl"></span>&nbsp;<? if ($bPrevDisabled): ?><span
             class="disabled">сюда</span><?
-        else:?><a href="<?= $sPrevHref; ?>" id="<?= $ClientID ?>_previous_page">сюда</a><?endif; ?>
-        &nbsp;<? if ($bNextDisabled):?><span class="disabled">туда</span><?
-        else:?><a href="<?= $sNextHref; ?>" id="<?= $ClientID ?>_next_page">туда</a><?endif; ?>&nbsp;<span
+        else:?><a href="<?= $sPrevHref; ?>" id="<?= $ClientID ?>_previous_page">сюда</a><? endif; ?>
+        &nbsp;<? if ($bNextDisabled): ?><span class="disabled">туда</span><?
+        else:?><a href="<?= $sNextHref; ?>" id="<?= $ClientID ?>_next_page">туда</a><? endif; ?>&nbsp;<span
             class="ctrl"></span><span class="arrow">&rarr;</span>
     </div>
 
@@ -112,11 +115,11 @@ if (!$arResult["NavShowAlways"]) {
         }
         ?>
         <div class="navigation-arrows arrows-pagination__item-link">
-            <span class="arrow">&larr;</span><span class="ctrl"></span>&nbsp;<? if ($bPrevDisabled):?><span
+            <span class="arrow">&larr;</span><span class="ctrl"></span>&nbsp;<? if ($bPrevDisabled): ?><span
                 class="disabled">сюда</span><?
-            else:?><a href="<?= $sPrevHref; ?>" id="<?= $ClientID ?>_previous_page">сюда</a><?endif; ?>
-            &nbsp;<? if ($bNextDisabled):?><span class="disabled">туда</span><?
-            else:?><a href="<?= $sNextHref; ?>" id="<?= $ClientID ?>_next_page">туда</a><?endif; ?>&nbsp;<span
+            else:?><a href="<?= $sPrevHref; ?>" id="<?= $ClientID ?>_previous_page">сюда</a><? endif; ?>
+            &nbsp;<? if ($bNextDisabled): ?><span class="disabled">туда</span><?
+            else:?><a href="<?= $sNextHref; ?>" id="<?= $ClientID ?>_next_page">туда</a><? endif; ?>&nbsp;<span
                 class="ctrl"></span><span class="arrow">&rarr;</span>
         </div>
 
@@ -167,7 +170,8 @@ if (!$arResult["NavShowAlways"]) {
                     <a class="nav-page-all toggle-menu__item-link toggle-menu__item-link_pagination toggle-menu__item-link_bordered"
                        href="<?= $arResult["sUrlPath"] ?>?<?= $strNavQueryString ?>SHOWALL_<?= $arResult["NavNum"] ?>=1">
 			<span class="icon-svg icon-svg_arrow-last">
-				<svg class="icon-svg" width="28" height="24" viewBox="0 0 28 24"><path d="M8.452 5.455l2.93 3.192c.89.969 1.335 1.361 2.225 1.909h-13.608v2.773h13.634c-.838.5-1.492 1.102-2.252 1.913l-2.93 3.192 2.276 1.964 7.588-8.452-7.588-8.452-2.276 1.961zM24.297 0h3.087v23.891h-3.087v-23.891z"/>
+				<svg class="icon-svg" width="28" height="24" viewBox="0 0 28 24"><path
+                        d="M8.452 5.455l2.93 3.192c.89.969 1.335 1.361 2.225 1.909h-13.608v2.773h13.634c-.838.5-1.492 1.102-2.252 1.913l-2.93 3.192 2.276 1.964 7.588-8.452-7.588-8.452-2.276 1.961zM24.297 0h3.087v23.891h-3.087v-23.891z"/>
 				</svg>
 			</span>
                     </a>
@@ -182,24 +186,29 @@ if (!$arResult["NavShowAlways"]) {
         BX.bind(document, "keydown", function (event) {
 
             event = event || window.event;
-            if (!event.ctrlKey)
+            if (!event.ctrlKey) {
                 return;
+            }
 
             var target = event.target || event.srcElement;
-            if (target && target.nodeName && (target.nodeName.toUpperCase() == "INPUT" || target.nodeName.toUpperCase() == "TEXTAREA"))
+            if (target && target.nodeName && (target.nodeName.toUpperCase() == "INPUT" || target.nodeName.toUpperCase() == "TEXTAREA")) {
                 return;
+            }
 
             var key = (event.keyCode ? event.keyCode : (event.which ? event.which : null));
-            if (!key)
+            if (!key) {
                 return;
+            }
 
             var link = null;
-            if (key == 39)
+            if (key == 39) {
                 link = BX('<?=$ClientID?>_next_page');
-            else if (key == 37)
+            }
+            else if (key == 37) {
                 link = BX('<?=$ClientID?>_previous_page');
-
-            if (link && link.href)
+            }
+            if (link && link.href) {
                 document.location = link.href;
+            }
         });
     </script>

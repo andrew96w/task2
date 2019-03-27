@@ -6,7 +6,9 @@ use Bitrix\Main\Context,
     Bitrix\Iblock,
     Bitrix\Main\Localization;
 
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+    die();
+}
 
 class NewsCustomComponent extends CBitrixComponent
 {
@@ -22,9 +24,9 @@ class NewsCustomComponent extends CBitrixComponent
 
     private function onPrepareComponentParams2()
     {
-        if (!isset($this->arParams["CACHE_TIME"]))
+        if (!isset($this->arParams["CACHE_TIME"])) {
             $this->arParams["CACHE_TIME"] = 36000000;
-
+        }
         if ($_GET["sort"] == "RANK_NEWS_ASC") {
             $this->arParams["SORT_ORDER1"] = "ASC";
         }
@@ -32,8 +34,9 @@ class NewsCustomComponent extends CBitrixComponent
             $this->arParams["SORT_ORDER1"] = "DESC";
         }
         $this->arParams["SORT_BY1"] = trim($this->arParams["SORT_BY1"]);
-        if (strlen($this->arParams["SORT_BY1"]) <= 0)
+        if (strlen($this->arParams["SORT_BY1"]) <= 0) {
             $this->arParams["SORT_BY1"] = "ACTIVE_FROM";
+        }
 
         $this->arParams["SORT_VAR"] = 0;
         switch ($_GET["sort"]) {
@@ -77,8 +80,10 @@ class NewsCustomComponent extends CBitrixComponent
 
             $arItem = $obElement->GetFields();
 
-            if ($this->arParams["PREVIEW_TRUNCATE_LEN"] > 0)
-                $arItem["PREVIEW_TEXT"] = $obParser->html_cut($arItem["PREVIEW_TEXT"], $this->arParams["PREVIEW_TRUNCATE_LEN"]);
+            if ($this->arParams["PREVIEW_TRUNCATE_LEN"] > 0) {
+                $arItem["PREVIEW_TEXT"] = $obParser->html_cut($arItem["PREVIEW_TEXT"],
+                    $this->arParams["PREVIEW_TRUNCATE_LEN"]);
+            }
             Iblock\Component\Tools::getFieldImageData(
                 $arItem,
                 array('PREVIEW_PICTURE', 'DETAIL_PICTURE'),

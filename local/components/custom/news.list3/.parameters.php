@@ -1,9 +1,12 @@
 <?
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+    die();
+}
 /** @var array $arCurrentValues */
 
-if (!CModule::IncludeModule("iblock"))
+if (!CModule::IncludeModule("iblock")) {
     return;
+}
 
 $arSorts = array("ASC" => GetMessage("T_IBLOCK_DESC_ASC"), "DESC" => GetMessage("T_IBLOCK_DESC_DESC"));
 $arSortFields = array(

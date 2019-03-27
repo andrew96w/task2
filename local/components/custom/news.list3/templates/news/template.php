@@ -1,13 +1,15 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die(); ?>
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+	die();
+} ?>
 
 <div class="news-list">
     <span><?= GetMessage("CT_SORT_TEXT") ?></span>
-    <a href="<?= $APPLICATION->GetCurPageParam("sort=RANK_NEWS_ASC", array("sort"), false); ?>">
-        <?= GetMessage("CT_SORT_ASC") ?>
-    </a>
-    <a href="<?= $APPLICATION->GetCurPageParam("sort=RANK_NEWS_DESC", array("sort"), false); ?>">
-        <?= GetMessage("CT_SORT_DESC") ?>
-    </a><br>
+	<a href="<?= $APPLICATION->GetCurPageParam("sort=RANK_NEWS_ASC", array("sort"), false); ?>">
+		<?= GetMessage("CT_SORT_ASC") ?>
+	</a>
+	<a href="<?= $APPLICATION->GetCurPageParam("sort=RANK_NEWS_DESC", array("sort"), false); ?>">
+		<?= GetMessage("CT_SORT_DESC") ?>
+	</a><br>
 
 	<div class="tabs__level tabs__level_bottom">
 		<ul class="toggle-menu ">
@@ -40,11 +42,11 @@
 	</div>
 
     <? foreach ($arResult["ITEMS"] as $arItem): ?>
-        <?
-        $arItem["RANK_NEWS2"] = CRatings::GetRatingVoteResult("THEMES", $arItem['ID']);
-        $arItem["RANK_NEWS2"] = $arItem["RANK_NEWS2"]["TOTAL_POSITIVE_VOTES"];
-        CIBlockElement::SetPropertyValuesEx($arItem["ID"], false, array("RANK_NEWS2" => $arItem["RANK_NEWS2"]));
-        ?>
+		<?
+		$arItem["RANK_NEWS2"] = CRatings::GetRatingVoteResult("THEMES", $arItem['ID']);
+		$arItem["RANK_NEWS2"] = $arItem["RANK_NEWS2"]["TOTAL_POSITIVE_VOTES"];
+		CIBlockElement::SetPropertyValuesEx($arItem["ID"], false, array("RANK_NEWS2" => $arItem["RANK_NEWS2"]));
+		?>
 		<li class="content-list__item content-list__item_post shortcuts_item" id="post_445140">
 		<article class="post post_preview">
 			<header class="post__meta">

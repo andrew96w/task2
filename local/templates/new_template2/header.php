@@ -1,4 +1,6 @@
-<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+<? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+	die();
+}
 IncludeTemplateLangFile($_SERVER["DOCUMENT_ROOT"] . "/bitrix/templates/" . SITE_TEMPLATE_ID . "/header.php");
 CJSCore::Init(array("fx"));
 $curPage = $APPLICATION->GetCurPage(true);
@@ -9,7 +11,7 @@ $theme = COption::GetOptionString("main", "wizard_eshop_bootstrap_theme_id", "bl
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width">
-		<link rel="shortcut icon" type="image/x-icon" href="<?=SITE_DIR?>favicon.ico" />
+		<link rel="shortcut icon" type="image/x-icon" href="<?= SITE_DIR ?>favicon.ico"/>
 		<? $APPLICATION->ShowHead(); ?>
 		<? $APPLICATION->SetAdditionalCSS("/bitrix/css/main/font-awesome.css"); ?>
 		<title><? $APPLICATION->ShowTitle() ?></title>

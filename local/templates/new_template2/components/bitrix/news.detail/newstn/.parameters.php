@@ -1,5 +1,7 @@
 <?
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+    die();
+}
 
 $arTemplateParameters = array(
     "DISPLAY_DATE" => Array(
@@ -49,10 +51,11 @@ if ($arCurrentValues["USE_SHARE"] == "Y") {
         "REFRESH" => "Y",
     );
 
-    if (strlen(trim($arCurrentValues["SHARE_TEMPLATE"])) <= 0)
+    if (strlen(trim($arCurrentValues["SHARE_TEMPLATE"])) <= 0) {
         $shareComponentTemlate = false;
-    else
+    } else {
         $shareComponentTemlate = trim($arCurrentValues["SHARE_TEMPLATE"]);
+    }
 
     include_once($_SERVER["DOCUMENT_ROOT"] . "/bitrix/components/bitrix/main.share/util.php");
 
