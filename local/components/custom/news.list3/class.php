@@ -31,22 +31,25 @@ class NewsCustomComponent extends CBitrixComponent
         if ($_GET["sort"] == "RANK_NEWS_DESC") {
             $this->arParams["SORT_ORDER1"] = "DESC";
         }
-        $this->arParams["SORT_VAR"] = 0;
-        if ($_GET["sort"] == "RANK_NONE") {
-            $this->arParams["SORT_VAR"] = 0;
-        }
-        if ($_GET["sort"] == "RANK_THREE") {
-            $this->arParams["SORT_VAR"] = 3;
-        }
-        if ($_GET["sort"] == "RANK_FIVE") {
-            $this->arParams["SORT_VAR"] = 5;
-        }
-        if ($_GET["sort"] == "RANK_TEN") {
-            $this->arParams["SORT_VAR"] = 10;
-        }
         $this->arParams["SORT_BY1"] = trim($this->arParams["SORT_BY1"]);
         if (strlen($this->arParams["SORT_BY1"]) <= 0)
             $this->arParams["SORT_BY1"] = "ACTIVE_FROM";
+
+        $this->arParams["SORT_VAR"] = 0;
+        switch ($_GET["sort"]) {
+            case "RANK_THREE":
+                $this->arParams["SORT_VAR"] = 3;
+                break;
+            case "RANK_FIVE":
+                $this->arParams["SORT_VAR"] = 5;
+                break;
+            case "RANK_TEN":
+                $this->arParams["SORT_VAR"] = 10;
+                break;
+            default:
+                $this->arParams["SORT_VAR"] = 0;
+                break;
+        }
     }
 
     private function getElements()
@@ -76,27 +79,25 @@ class NewsCustomComponent extends CBitrixComponent
 
             if ($this->arParams["PREVIEW_TRUNCATE_LEN"] > 0)
                 $arItem["PREVIEW_TEXT"] = $obParser->html_cut($arItem["PREVIEW_TEXT"], $this->arParams["PREVIEW_TRUNCATE_LEN"]);
-
             Iblock\Component\Tools::getFieldImageData(
                 $arItem,
                 array('PREVIEW_PICTURE', 'DETAIL_PICTURE'),
                 Iblock\Component\Tools::IPROPERTY_ENTITY_ELEMENT,
                 'IPROPERTY_VALUES'
             );
-            $navComponentParameters = array();
-
             $arResult["ITEMS"][] = $arItem;
-            $arResult["SORT_VAR"] = $this->arParams["SORT_VAR"];
             $arResult["ELEMENTS"][] = $arItem["ID"];
-            $arResult["NAV_STRING"] = $this->res->GetPageNavStringEx(
-                $this->navComponentObject,
-                $this->arParams["PAGER_TITLE"],
-                $this->arParams["PAGER_TEMPLATE"],
-                $this->arParams["PAGER_SHOW_ALWAYS"],
-                $this,
-                $navComponentParameters
-            );
         }
+        $navComponentParameters = array();
+        $arResult["SORT_VAR"] = $this->arParams["SORT_VAR"];
+        $arResult["NAV_STRING"] = $this->res->GetPageNavStringEx(
+            $this->navComponentObject,
+            $this->arParams["PAGER_TITLE"],
+            $this->arParams["PAGER_TEMPLATE"],
+            $this->arParams["PAGER_SHOW_ALWAYS"],
+            $this,
+            $navComponentParameters
+        );
         return $arResult;
     }
 
@@ -105,8 +106,7 @@ class NewsCustomComponent extends CBitrixComponent
         try {
             $this->checkRequiredModules();
             Loader::includeModule('iblock');
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
         }
         $this->onPrepareComponentParams2();
         $this->getElements();

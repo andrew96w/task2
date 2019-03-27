@@ -1,6 +1,5 @@
 /.idea/
 /bitrix/*
-!/bitrix/.settings.php
 /images/
 /upload/
 /about/

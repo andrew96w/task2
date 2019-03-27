@@ -7,4 +7,3 @@ $MESS["CT_SORT_NONE"] = " Без порога ";
 $MESS["CT_SORT_THREE"] = " >=3 ";
 $MESS["CT_SORT_FIVE"] = " >=5 ";
 $MESS["CT_SORT_TEN"] = " >=10 ";
-?>

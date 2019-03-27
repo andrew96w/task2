@@ -15,6 +15,7 @@ $APPLICATION->SetTitle("Список новостей");
 		"COMPONENT_TEMPLATE" => "news",
 		"DETAIL_URL" => "element.php?ELEMENT_ID=#ELEMENT_ID#",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
+		"PAGER_TEMPLATE" => "newtemp",
 		"DISPLAY_PICTURE" => "Y",
 		"NEWS_COUNT" => "5",
 		"PREVIEW_TRUNCATE_LEN" => "",
