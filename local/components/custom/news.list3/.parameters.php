@@ -35,6 +35,7 @@ $arComponentParameters = array(
             "VALUES" => $arSortFields,
             "ADDITIONAL_VALUES" => "Y",
         ),
+        "FIELD_CODE" => CIBlockParameters::GetFieldCode(GetMessage("IBLOCK_FIELD"), "DATA_SOURCE"),
         "SORT_ORDER1" => array(
             "PARENT" => "DATA_SOURCE",
             "NAME" => GetMessage("T_IBLOCK_DESC_IBBY1"),

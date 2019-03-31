@@ -11,7 +11,7 @@ $APPLICATION->SetTitle("Список новостей");
 		"AJAX_OPTION_JUMP" => "N",
 		"AJAX_OPTION_STYLE" => "Y",
 		"CACHE_TIME" => "36000000",
-		"CACHE_TYPE" => "A",
+		"CACHE_TYPE" => "N",
 		"COMPONENT_TEMPLATE" => "news",
 		"DETAIL_URL" => "element.php?ELEMENT_ID=#ELEMENT_ID#",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
@@ -20,7 +20,11 @@ $APPLICATION->SetTitle("Список новостей");
 		"NEWS_COUNT" => "5",
 		"PREVIEW_TRUNCATE_LEN" => "",
 		"SORT_BY1" => "PROPERTY_RANK_NEWS2",
-		"SORT_ORDER1" => "DESC"
+		"SORT_ORDER1" => "DESC",
+		"FIELD_CODE" => array(
+			0 => "",
+			1 => "",
+		)
 	),
 	false
 );?><br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

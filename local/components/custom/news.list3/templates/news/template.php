@@ -1,7 +1,15 @@
 <? if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 	die();
 } ?>
-
+<?
+$active = "not_active";
+global $USER;
+if ($USER->IsAuthorized()){
+	$active = "active";
+}else{
+	$active = "not_active";
+}
+?>
 <div class="news-list">
     <span><?= GetMessage("CT_SORT_TEXT") ?></span>
 	<a href="<?= $APPLICATION->GetCurPageParam("sort=RANK_NEWS_ASC", array("sort"), false); ?>">
@@ -22,19 +30,19 @@
             </li>
             <li class="toggle-menu__item">
                 <a href="<?= $APPLICATION->GetCurPageParam("sort=RANK_THREE", array("sort"), false); ?>"
-                   class="toggle-menu__item-link " rel="nofollow" title="Все публикации с рейтингом 10 и выше">
+                   class="toggle-menu__item-link " rel="nofollow" title="Все публикации с рейтингом 3 и выше">
                     <?= GetMessage("CT_SORT_THREE") ?>
                 </a>
             </li>
             <li class="toggle-menu__item">
                 <a href="<?= $APPLICATION->GetCurPageParam("sort=RANK_FIVE", array("sort"), false); ?>"
-                   class="toggle-menu__item-link " rel="nofollow" title="Все публикации с рейтингом 25 и выше">
+                   class="toggle-menu__item-link " rel="nofollow" title="Все публикации с рейтингом 5 и выше">
                     <?= GetMessage("CT_SORT_FIVE") ?>
                 </a>
             </li>
             <li class="toggle-menu__item">
                 <a href="<?= $APPLICATION->GetCurPageParam("sort=RANK_TEN", array("sort"), false); ?>"
-                   class="toggle-menu__item-link " rel="nofollow" title="Все публикации с рейтингом 50 и выше">
+                   class="toggle-menu__item-link " rel="nofollow" title="Все публикации с рейтингом 10 и выше">
                     <?= GetMessage("CT_SORT_TEN") ?>
                 </a>
             </li>
@@ -42,16 +50,11 @@
 	</div>
 
     <? foreach ($arResult["ITEMS"] as $arItem): ?>
-		<?
-		$arItem["RANK_NEWS2"] = CRatings::GetRatingVoteResult("THEMES", $arItem['ID']);
-		$arItem["RANK_NEWS2"] = $arItem["RANK_NEWS2"]["TOTAL_POSITIVE_VOTES"];
-		CIBlockElement::SetPropertyValuesEx($arItem["ID"], false, array("RANK_NEWS2" => $arItem["RANK_NEWS2"]));
-		?>
 		<li class="content-list__item content-list__item_post shortcuts_item" id="post_445140">
 		<article class="post post_preview">
 			<header class="post__meta">
 				<a href="#" class="post__user-info user-info" title="Автор публикации">
-					<img src="#" width="24" height="24" class="user-info__image-pic user-info__image-pic_small">
+					<img src="//habrastorage.org/getpro/habr/avatars/4ff/b7e/1e6/4ffb7e1e672b59a5d54622150d6d1039.jpg" width="24" height="24" class="user-info__image-pic user-info__image-pic_small">
 					<span class="user-info__nickname user-info__nickname_small">pronskiy</span>
 				</a>
 				<span class="post__time">сегодня в 05:27</span>
@@ -69,15 +72,15 @@
 				<div class="post__text post__text-html js-mediator-article">
                     <a href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
                         <div style="text-align:center;">
-                            <? if ($arParams["DISPLAY_PICTURE"] != "N" && is_array($arItem["PREVIEW_PICTURE"])): ?>
+                            <?// if ($arParams["DISPLAY_PICTURE"] != "N" && is_array($arItem["PREVIEW_PICTURE"])): ?>
                                 <div class="div-item_img">
                                     <a class="link-img" href="<?= $arItem["DETAIL_PAGE_URL"] ?>">
-                                        <img class="preview_picture" src="<?= $arItem["PREVIEW_PICTURE"]["SRC"] ?>"
-                                             alt="<?= $arItem["PREVIEW_PICTURE"]["ALT"] ?>"
-                                             title="<?= $arItem["PREVIEW_PICTURE"]["TITLE"] ?>"/>
+                                        <img class="preview_picture" src="<?= $arItem["PREVIEW_PICTURE"] ?>"
+                                             alt="<?= $arItem["NAME"] ?>"
+                                             title="<?= $arItem["NAME"] ?>"/>
                                     </a>
                                 </div>
-                            <? endif ?>
+                            <?// endif ?>
                         </div>
                     </a><br>
                     <? if ($arItem["PREVIEW_TEXT"]): ?>
@@ -94,20 +97,19 @@
 				<ul class="post-stats  js-user_" id="infopanel_post_445140">
 					<li class="post-stats__item post-stats__item_voting-wjt">
 						<div class="voting-wjt voting-wjt_post js-post-vote" data-id="445140" data-type="2">
-							<button type="button" class="btn voting-wjt__button " data-action="plus" onclick="posts_vote(this);" title="Голосовать могут только зарегистрированные пользователи Голосовать могут только пользователи с полноправным аккаунтом" disabled><svg class="icon-svg_arrow-up" width="10" height="16"><use xlink:href="https://habr.com/images/1553247084/common-svg-sprite.svg#vote-arrow" /></svg></button>
-
-							<span class="voting-wjt__counter voting-wjt__counter_positive  js-score" title="Общий рейтинг ">
-								<? $APPLICATION->IncludeComponent("bitrix:rating.vote", "",
-                                    Array(
-                                        "ENTITY_TYPE_ID" => "THEMES",
-                                        "ENTITY_ID" => $arItem['ID']
-                                    ),
-                                    null,
-                                    array("HIDE_ICONS" => "Y")
-                                ); ?>
-							</span>
-
-							<button type="button" class="btn voting-wjt__button " data-action="minus" onclick="posts_vote(this);" title="Голосовать могут только зарегистрированные пользователи Голосовать могут только пользователи с полноправным аккаунтом" disabled><svg class="icon-svg_arrow-down" width="10" height="16"><use xlink:href="https://habr.com/images/1553247084/common-svg-sprite.svg#vote-arrow" /></svg></button>
+							<a class="btn voting-wjt__button <?=$active?>" id="link_vote_plus<?= $arItem["ID"] ?>"
+							   href="<?= $APPLICATION->GetCurPageParam("VOTE=PLUS&ITEM_ID=" . $arItem["ID"] . "&USER_ID=" . $USER->GetID() . "&RANK_VALUE=" . $arItem["PROPERTY_RANK_NEWS2_VALUE"], array("VOTE", "ITEM_ID", "USER_ID", "RANK_VALUE"), false); ?>"
+							   title="<? if (!$USER->IsAuthorized()) echo 'Голосовать могут только зарегистрированные пользователи Голосовать могут только пользователи с полноправным аккаунтом'; else echo "Плюс";?>">
+								<svg class="icon-svg_arrow-up" width="10" height="16"><path d="M6.802.129l-6.709 7.637c-.211.241-.037.615.289.615h3.629c.21 0 .38.167.38.372v14.875c0 .205.169.372.379.372h4.64c.21 0 .379-.167.379-.372v-14.876c0-.205.17-.372.38-.372h3.63c.325 0 .5-.373.289-.615l-6.709-7.637c-.153-.171-.427-.171-.578.001z"></path>
+								</svg>
+							</a>
+							<span class="voting-wjt__counter voting-wjt__counter_positive  js-score" title="Общий рейтинг "> <?= $arItem["PROPERTY_RANK_NEWS2_VALUE"];?></span>
+							<a class="btn voting-wjt__button <?=$active?>" id="link_vote_minus<?= $arItem["ID"] ?>"
+							   href="<?= $APPLICATION->GetCurPageParam("VOTE=MINUS&ITEM_ID=" . $arItem["ID"] . "&USER_ID=" . $USER->GetID() . "&RANK_VALUE=" . $arItem["PROPERTY_RANK_NEWS2_VALUE"], array("VOTE", "ITEM_ID", "USER_ID", "RANK_VALUE"), false); ?>"
+							   title="<? if (!$USER->IsAuthorized()) echo 'Голосовать могут только зарегистрированные пользователи Голосовать могут только пользователи с полноправным аккаунтом'; else echo "Минус";?>">
+								<svg class="icon-svg_arrow-down" width="10" height="16"><path d="M6.802.129l-6.709 7.637c-.211.241-.037.615.289.615h3.629c.21 0 .38.167.38.372v14.875c0 .205.169.372.379.372h4.64c.21 0 .379-.167.379-.372v-14.876c0-.205.17-.372.38-.372h3.63c.325 0 .5-.373.289-.615l-6.709-7.637c-.153-.171-.427-.171-.578.001z"></path>
+								</svg>
+							</a>
 						</div>
 					</li>
 
@@ -133,6 +135,8 @@
 		</article>
 	</li>
     <? endforeach; ?>
+
+
     <? if ($arParams["DISPLAY_BOTTOM_PAGER"]): ?>
         <br/><?= $arResult["NAV_STRING"] ?>
     <? endif; ?>
