@@ -137,16 +137,11 @@ class NewsCustomComponent extends CBitrixComponent
             if ($arItem["RANK_NEWS"] == null) {
                 $arItem["RANK_NEWS"] = 0;
             }
-
             if ($this->arParams["PREVIEW_TRUNCATE_LEN"] > 0) {
                 $arItem["PREVIEW_TEXT"] = $obParser->html_cut($arItem["PREVIEW_TEXT"],
                     $this->arParams["PREVIEW_TRUNCATE_LEN"]);
             }
-            /*foreach ($arImg as $key => $value) {
-                if ($key == $arItem["PREVIEW_PICTURE"]) {
-                    $arItem["PREVIEW_PICTURE"] = $value;
-                }
-            }*/
+
             if(array_key_exists($arItem["PREVIEW_PICTURE"], $arImg)){
                 $arItem["PREVIEW_PICTURE"] = $arImg[$arItem["PREVIEW_PICTURE"]];
             }
