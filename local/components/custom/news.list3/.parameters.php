@@ -8,42 +8,41 @@ if (!CModule::IncludeModule("iblock")) {
     return;
 }
 
-$arSorts = array("ASC" => GetMessage("T_IBLOCK_DESC_ASC"), "DESC" => GetMessage("T_IBLOCK_DESC_DESC"));
-$arSortFields = array(
+$arSorts = ["ASC" => GetMessage("T_IBLOCK_DESC_ASC"), "DESC" => GetMessage("T_IBLOCK_DESC_DESC")];
+$arSortFields = [
     "ID" => GetMessage("T_IBLOCK_DESC_FID"),
     "NAME" => GetMessage("T_IBLOCK_DESC_FNAME"),
     "ACTIVE_FROM" => GetMessage("T_IBLOCK_DESC_FACT"),
     "SORT" => GetMessage("T_IBLOCK_DESC_FSORT"),
-    "PROPERTY_RANK_NEWS2" => GetMessage("T_IBLOCK_DESC_RANK")
-);
+    "PROPERTY_RANK_NEWS" => GetMessage("T_IBLOCK_DESC_RANK")
+];
 
-$arComponentParameters = array(
-    "GROUPS" => array(),
-    "PARAMETERS" => array(
-        "AJAX_MODE" => array(),
-        "NEWS_COUNT" => array(
+$arComponentParameters = [
+    "GROUPS" => [],
+    "PARAMETERS" => [
+        "AJAX_MODE" => [],
+        "NEWS_COUNT" => [
             "PARENT" => "BASE",
             "NAME" => GetMessage("T_IBLOCK_DESC_LIST_CONT"),
             "TYPE" => "STRING",
             "DEFAULT" => "20",
-        ),
-        "SORT_BY1" => array(
+        ],
+        "SORT_BY" => [
             "PARENT" => "DATA_SOURCE",
             "NAME" => GetMessage("T_IBLOCK_DESC_IBORD1"),
             "TYPE" => "LIST",
             "DEFAULT" => "ACTIVE_FROM",
             "VALUES" => $arSortFields,
             "ADDITIONAL_VALUES" => "Y",
-        ),
-        "FIELD_CODE" => CIBlockParameters::GetFieldCode(GetMessage("IBLOCK_FIELD"), "DATA_SOURCE"),
-        "SORT_ORDER1" => array(
+        ],
+        "SORT_ORDER" => [
             "PARENT" => "DATA_SOURCE",
             "NAME" => GetMessage("T_IBLOCK_DESC_IBBY1"),
             "TYPE" => "LIST",
             "DEFAULT" => "DESC",
             "VALUES" => $arSorts,
             "ADDITIONAL_VALUES" => "Y",
-        ),
+        ],
         "DETAIL_URL" => CIBlockParameters::GetPathTemplateParam(
             "DETAIL",
             "DETAIL_URL",
@@ -51,12 +50,12 @@ $arComponentParameters = array(
             "",
             "URL_TEMPLATES"
         ),
-        "PREVIEW_TRUNCATE_LEN" => array(
+        "PREVIEW_TRUNCATE_LEN" => [
             "PARENT" => "ADDITIONAL_SETTINGS",
             "NAME" => GetMessage("T_IBLOCK_DESC_PREVIEW_TRUNCATE_LEN"),
             "TYPE" => "STRING",
             "DEFAULT" => "",
-        ),
-        "CACHE_TIME" => array("DEFAULT" => 36000000),
-    ),
-);
+        ],
+        "CACHE_TIME" => ["DEFAULT" => 36000000],
+    ],
+];

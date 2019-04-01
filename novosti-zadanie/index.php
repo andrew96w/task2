@@ -19,12 +19,14 @@ $APPLICATION->SetTitle("Список новостей");
 		"DISPLAY_PICTURE" => "Y",
 		"NEWS_COUNT" => "5",
 		"PREVIEW_TRUNCATE_LEN" => "",
-		"SORT_BY1" => "PROPERTY_RANK_NEWS2",
+		"SORT_BY1" => "PROPERTY_RANK_NEWS",
 		"SORT_ORDER1" => "DESC",
 		"FIELD_CODE" => array(
 			0 => "",
 			1 => "",
-		)
+		),
+		"SORT_BY" => "PROPERTY_RANK_NEWS",
+		"SORT_ORDER" => "DESC"
 	),
 	false
 );?><br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
