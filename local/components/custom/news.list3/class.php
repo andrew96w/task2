@@ -129,6 +129,11 @@ class NewsCustomComponent extends CBitrixComponent
         while ($res_arr = $res->GetNext()) {
             $arImg[$res_arr["ID"]] = "/upload/" . $res_arr["SUBDIR"] . "/" . $res_arr["FILE_NAME"];
         }
+        $rsUsers = CUser::GetList(($by = "ID"), ($order = "desc"), [], ["ID", "LOGIN"]);
+        while ($res_arr = $rsUsers->GetNext()) {
+            $arUsers[$res_arr["ID"]] = $res_arr["LOGIN"];
+        }
+
         $obParser = new CTextParser;
         while ($obElement = $this->res->GetNextElement()) {
 
@@ -142,9 +147,10 @@ class NewsCustomComponent extends CBitrixComponent
                     $this->arParams["PREVIEW_TRUNCATE_LEN"]);
             }
 
-            if(array_key_exists($arItem["PREVIEW_PICTURE"], $arImg)){
+            if (array_key_exists($arItem["PREVIEW_PICTURE"], $arImg)) {
                 $arItem["PREVIEW_PICTURE"] = $arImg[$arItem["PREVIEW_PICTURE"]];
             }
+            $arItem["CREATED_BY_LOGIN"] = $arUsers[$arItem["CREATED_BY"]];
 
             $arResult["ITEMS"][] = $arItem;
             $arResult["ELEMENTS"][] = $arItem["ID"];

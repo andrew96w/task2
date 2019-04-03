@@ -4,9 +4,9 @@
 <?
 $active = "not_active";
 global $USER;
-if ($USER->IsAuthorized()){
+if ($USER->IsAuthorized()) {
 	$active = "active";
-}else{
+} else {
 	$active = "not_active";
 }
 ?>
@@ -55,7 +55,9 @@ if ($USER->IsAuthorized()){
 			<header class="post__meta">
 				<a href="#" class="post__user-info user-info" title="Автор публикации">
 					<img src="//habrastorage.org/getpro/habr/avatars/4ff/b7e/1e6/4ffb7e1e672b59a5d54622150d6d1039.jpg" width="24" height="24" class="user-info__image-pic user-info__image-pic_small">
-					<span class="user-info__nickname user-info__nickname_small">pronskiy</span>
+					<span class="user-info__nickname user-info__nickname_small">
+						<?= $arItem["CREATED_BY_LOGIN"]; ?>
+					</span>
 				</a>
 				<span class="post__time">сегодня в 05:27</span>
 			</header>
