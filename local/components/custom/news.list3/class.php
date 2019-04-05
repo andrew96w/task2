@@ -15,6 +15,10 @@ class NewsCustomComponent extends CBitrixComponent
     private $res;
     private $navComponentObject;
     private $iBlock;
+    private $arImgId = [];
+    private $arUsersId = [];
+    private $arUsers = [];
+    private $arImg = [];
 
     protected function checkRequiredModules()
     {
@@ -101,11 +105,11 @@ class NewsCustomComponent extends CBitrixComponent
     private function getElements()
     {
         $arSelect = [];
+        $this->iBlock = [];
 
-        $this->iBlock = "1";
-        $dbIblock = CIBlock::GetList(["SORT" => "ASC"], ["SITE_ID" => $_REQUEST["site"], "TYPE" => "news"]);
-        if ($arRes = $dbIblock->Fetch()) {
-            $this->iBlock = $arRes["ID"];
+        $rsIblock = CIBlock::GetList(["SORT" => "ASC"], ["SITE_ID" => $_REQUEST["site"], "TYPE" => "news"]);
+        while ($arRes = $rsIblock->Fetch()) {
+            $this->iBlock[$arRes["CODE"]] = $arRes["ID"];
         }
 
         $arSort = [
@@ -114,7 +118,7 @@ class NewsCustomComponent extends CBitrixComponent
 
         $arFilter = [
             "IBLOCK_TYPE" => "news",
-            "IBLOCK_ID" => $this->iBlock,
+            "IBLOCK_ID" => $this->iBlock["news"],
             "ACTIVE" => "Y",
             ">=PROPERTY_RANK_NEWS" => $this->arParams["SORT_VAR"],
         ];
@@ -123,17 +127,20 @@ class NewsCustomComponent extends CBitrixComponent
         $this->res->SetUrlTemplates($this->arParams["DETAIL_URL"], "", $this->arParams["IBLOCK_URL"]);
     }
 
+    private function getElementsForResult($string)
+    {
+        $res = CFile::GetList([], ["@ID" => $this->arImgId]);
+        while ($res_arr = $res->GetNext()) {
+            $this->arImg[$res_arr["ID"]] = "/upload/" . $res_arr["SUBDIR"] . "/" . $res_arr["FILE_NAME"];
+        }
+        $rsUsers = CUser::GetList(($by = "login"), ($order = "asc"), ["ID" => $string], ["ID", "LOGIN"]);
+        while ($res_arr2 = $rsUsers->GetNext()) {
+            $this->arUsers[$res_arr2["ID"]] = $res_arr2["LOGIN"];
+        }
+    }
+
     private function onPrepareComponentResult()
     {
-        $res = CFile::GetList([], []);
-        while ($res_arr = $res->GetNext()) {
-            $arImg[$res_arr["ID"]] = "/upload/" . $res_arr["SUBDIR"] . "/" . $res_arr["FILE_NAME"];
-        }
-        $rsUsers = CUser::GetList(($by = "ID"), ($order = "desc"), [], ["ID", "LOGIN"]);
-        while ($res_arr = $rsUsers->GetNext()) {
-            $arUsers[$res_arr["ID"]] = $res_arr["LOGIN"];
-        }
-
         $obParser = new CTextParser;
         while ($obElement = $this->res->GetNextElement()) {
 
@@ -147,13 +154,23 @@ class NewsCustomComponent extends CBitrixComponent
                     $this->arParams["PREVIEW_TRUNCATE_LEN"]);
             }
 
-            if (array_key_exists($arItem["PREVIEW_PICTURE"], $arImg)) {
-                $arItem["PREVIEW_PICTURE"] = $arImg[$arItem["PREVIEW_PICTURE"]];
-            }
-            $arItem["CREATED_BY_LOGIN"] = $arUsers[$arItem["CREATED_BY"]];
+            $this->arImgId[$arItem["ID"]] = $arItem["PREVIEW_PICTURE"];
+            $this->arUsersId[$arItem["ID"]] = $arItem["CREATED_BY"];
 
-            $arResult["ITEMS"][] = $arItem;
+            $arResult["ITEMS"][$arItem["ID"]] = $arItem;
             $arResult["ELEMENTS"][] = $arItem["ID"];
+        }
+
+        if ($arResult["ITEMS"]) {
+            $string = "";
+            foreach ($this->arUsersId as $value) {
+                $string .= $value . " | ";
+            }
+            $this->getElementsForResult($string);
+            foreach ($arResult["ITEMS"] as $item) {
+                $arResult["ITEMS"][$item["ID"]]["CREATED_BY_LOGIN"] = $this->arUsers[$this->arUsersId[$item["ID"]]];
+                $arResult["ITEMS"][$item["ID"]]["PREVIEW_PICTURE"] = $this->arImg[$this->arImgId[$item["ID"]]];
+            }
         }
 
         $navComponentParameters = [];

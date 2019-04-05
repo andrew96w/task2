@@ -3,10 +3,10 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Новость детально");
 ?><?$APPLICATION->IncludeComponent(
 	"bitrix:news.detail", 
-	".default", 
+	"newstn", 
 	array(
 		"ACTIVE_DATE_FORMAT" => "d.m.Y",
-		"ADD_ELEMENT_CHAIN" => "N",
+		"ADD_ELEMENT_CHAIN" => "Y",
 		"ADD_SECTIONS_CHAIN" => "Y",
 		"AJAX_MODE" => "N",
 		"AJAX_OPTION_ADDITIONAL" => "",
@@ -18,6 +18,7 @@ $APPLICATION->SetTitle("Новость детально");
 		"CACHE_TIME" => "36000000",
 		"CACHE_TYPE" => "A",
 		"CHECK_DATES" => "Y",
+		"COMPONENT_TEMPLATE" => "newstn",
 		"DETAIL_URL" => "",
 		"DISPLAY_BOTTOM_PAGER" => "Y",
 		"DISPLAY_DATE" => "Y",
@@ -34,7 +35,7 @@ $APPLICATION->SetTitle("Новость детально");
 		"IBLOCK_ID" => "1",
 		"IBLOCK_TYPE" => "news",
 		"IBLOCK_URL" => "index.php?ID=#IBLOCK_ID#",
-		"INCLUDE_IBLOCK_INTO_CHAIN" => "Y",
+		"INCLUDE_IBLOCK_INTO_CHAIN" => "N",
 		"MESSAGE_404" => "",
 		"META_DESCRIPTION" => "-",
 		"META_KEYWORDS" => "-",
@@ -43,8 +44,9 @@ $APPLICATION->SetTitle("Новость детально");
 		"PAGER_TEMPLATE" => ".default",
 		"PAGER_TITLE" => "Страница",
 		"PROPERTY_CODE" => array(
-			0 => "RANK_NEWS2",
-			1 => "",
+			0 => "",
+			1 => "RANK_NEWS2",
+			2 => "",
 		),
 		"SET_BROWSER_TITLE" => "Y",
 		"SET_CANONICAL_URL" => "N",
@@ -55,8 +57,15 @@ $APPLICATION->SetTitle("Новость детально");
 		"SET_TITLE" => "Y",
 		"SHOW_404" => "N",
 		"USE_PERMISSIONS" => "N",
-		"USE_SHARE" => "N",
-		"COMPONENT_TEMPLATE" => ".default"
+		"USE_SHARE" => "N"
 	),
 	false
+);?><?$APPLICATION->IncludeComponent(
+	"bitrix:breadcrumb",
+	"",
+	Array(
+		"PATH" => "",
+		"SITE_ID" => "s1",
+		"START_FROM" => "0"
+	)
 );?><br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

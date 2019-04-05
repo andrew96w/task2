@@ -26,7 +26,8 @@ $APPLICATION->SetTitle("Список новостей");
 			1 => "",
 		),
 		"SORT_BY" => "PROPERTY_RANK_NEWS",
-		"SORT_ORDER" => "DESC"
+		"SORT_ORDER" => "DESC",
+		"IBLOCKS_ID" => "Новости"
 	),
 	false
 );?><br><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

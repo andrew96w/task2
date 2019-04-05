@@ -2,7 +2,6 @@
 	die();
 } ?>
 <?
-$active = "not_active";
 global $USER;
 if ($USER->IsAuthorized()) {
 	$active = "active";
