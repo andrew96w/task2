@@ -14,7 +14,7 @@ class NewsCustomComponent extends CBitrixComponent
 {
     private $res;
     private $navComponentObject;
-    private $iBlock;
+    private $iBlock = [];
     private $arImgId = [];
     private $arUsersId = [];
     private $arUsers = [];
@@ -105,11 +105,10 @@ class NewsCustomComponent extends CBitrixComponent
     private function getElements()
     {
         $arSelect = [];
-        $this->iBlock = [];
 
         $rsIblock = CIBlock::GetList(["SORT" => "ASC"], ["SITE_ID" => $_REQUEST["site"], "TYPE" => "news"]);
         while ($arRes = $rsIblock->Fetch()) {
-            $this->iBlock[$arRes["CODE"]] = $arRes["ID"];
+            $this->iBlock[$arRes["ID"]] = $arRes["CODE"];
         }
 
         $arSort = [
@@ -118,7 +117,7 @@ class NewsCustomComponent extends CBitrixComponent
 
         $arFilter = [
             "IBLOCK_TYPE" => "news",
-            "IBLOCK_ID" => $this->iBlock["news"],
+            "IBLOCK_ID" => array_search("news", $this->iBlock),
             "ACTIVE" => "Y",
             ">=PROPERTY_RANK_NEWS" => $this->arParams["SORT_VAR"],
         ];
