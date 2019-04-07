@@ -58,7 +58,7 @@ if ($USER->IsAuthorized()) {
 						<?= $arItem["CREATED_BY_LOGIN"]; ?>
 					</span>
 				</a>
-				<span class="post__time">сегодня в 05:27</span>
+				<span class="post__time"><?= $arItem["DATE_CREATE_FORMAT"]; ?></span>
 			</header>
 
 			<h2 class="post__title">

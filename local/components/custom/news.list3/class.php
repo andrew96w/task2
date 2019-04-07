@@ -105,7 +105,6 @@ class NewsCustomComponent extends CBitrixComponent
     private function getElements()
     {
         $arSelect = [];
-
         $rsIblock = CIBlock::GetList(["SORT" => "ASC"], ["SITE_ID" => $_REQUEST["site"], "TYPE" => "news"]);
         while ($arRes = $rsIblock->Fetch()) {
             $this->iBlock[$arRes["ID"]] = $arRes["CODE"];
@@ -114,13 +113,13 @@ class NewsCustomComponent extends CBitrixComponent
         $arSort = [
             $this->arParams["SORT_BY"] => $this->arParams["SORT_ORDER"],
         ];
-
         $arFilter = [
             "IBLOCK_TYPE" => "news",
             "IBLOCK_ID" => array_search("news", $this->iBlock),
             "ACTIVE" => "Y",
             ">=PROPERTY_RANK_NEWS" => $this->arParams["SORT_VAR"],
         ];
+
         $this->res = CIBlockElement::GetList($arSort, $arFilter, false,
             ["nPageSize" => $this->arParams["NEWS_COUNT"]], $arSelect);
         $this->res->SetUrlTemplates($this->arParams["DETAIL_URL"], "", $this->arParams["IBLOCK_URL"]);
@@ -156,14 +155,34 @@ class NewsCustomComponent extends CBitrixComponent
             $this->arImgId[$arItem["ID"]] = $arItem["PREVIEW_PICTURE"];
             $this->arUsersId[$arItem["ID"]] = $arItem["CREATED_BY"];
 
+            $date = strtotime($arItem["DATE_CREATE"]);
+            $dayStart = mktime(0, 0, 0);
+            if ($date > $dayStart) {
+                $arItem["DATE_CREATE_FORMAT"] = "Сегодня в " . date('H:i', $date);
+            } else {
+                if ($date > strtotime("last monday")) {
+                    $arItem["DATE_CREATE_FORMAT"] = "На этой неделе в " . date('H:i', $date);
+                } else {
+                    $arItem["DATE_CREATE_FORMAT"] = "Более недели назад " . date('d m Y', $date) . " в " . date('H:i',
+                            $date);
+                }
+            }
+
             $arResult["ITEMS"][$arItem["ID"]] = $arItem;
             $arResult["ELEMENTS"][] = $arItem["ID"];
         }
 
         if ($arResult["ITEMS"]) {
             $string = "";
+            $total = count($this->arUsersId);
+            $count = 0;
             foreach ($this->arUsersId as $value) {
-                $string .= $value . " | ";
+                $count++;
+                if ($count != $total) {
+                    $string .= $value . " | ";
+                } else {
+                    $string .= $value;
+                }
             }
             $this->getElementsForResult($string);
             foreach ($arResult["ITEMS"] as $item) {
