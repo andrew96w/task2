@@ -60,44 +60,28 @@ class NewsCustomComponent extends CBitrixComponent
 
     private function raiting()
     {
-        if ($_GET["VOTE"] == "PLUS") {
+        if ($_GET["VOTE"]) {
             $flag = false;
+            global $USER;
             $res = CIBlockElement::GetByID($_GET["ITEM_ID"]);
             if ($obRes = $res->GetNextElement()) {
-                $ar_res = $obRes->GetProperty("RANK_USERS");
+                $rankUsers = $obRes->GetProperty("RANK_USERS");
+                $rankValue = $obRes->GetProperty("RANK_NEWS");
             }
-            foreach ($ar_res["VALUE"] as $item) {
-                if ($_GET["USER_ID"] == $item) {
+            foreach ($rankUsers["VALUE"] as $item) {
+                if ($USER->GetID() == $item) {
                     $flag = true;
                     break;
                 }
             }
             if (!$flag) {
-                CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false,
-                    ["RANK_NEWS" => $_GET["RANK_VALUE"] + 1]);
-                $ar_res["VALUE"][] = $_GET["USER_ID"];
-                CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false,
-                    ["RANK_USERS" => $ar_res["VALUE"]]);
-            }
-        }
-        if ($_GET["VOTE"] == "MINUS") {
-            $flag = false;
-            $res = CIBlockElement::GetByID($_GET["ITEM_ID"]);
-            if ($obRes = $res->GetNextElement()) {
-                $ar_res = $obRes->GetProperty("RANK_USERS");
-            }
-            foreach ($ar_res["VALUE"] as $item) {
-                if ($_GET["USER_ID"] == $item) {
-                    $flag = true;
-                    break;
+                if ($_GET["VOTE"] == "PLUS") {
+                    CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false, ["RANK_NEWS" => $rankValue["VALUE"] + 1]);
+                } else {
+                    CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false, ["RANK_NEWS" => $rankValue["VALUE"] - 1]);
                 }
-            }
-            if (!$flag) {
-                CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false,
-                    ["RANK_NEWS" => $_GET["RANK_VALUE"] - 1]);
-                $ar_res["VALUE"][] = $_GET["USER_ID"];
-                CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false,
-                    ["RANK_USERS" => $ar_res["VALUE"]]);
+                $rankUsers["VALUE"][] = $USER->GetID();
+                CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false, ["RANK_USERS" => $rankUsers["VALUE"]]);
             }
         }
     }
@@ -105,23 +89,23 @@ class NewsCustomComponent extends CBitrixComponent
     private function getElements()
     {
         $arSelect = [];
-        $rsIblock = CIBlock::GetList(["SORT" => "ASC"], ["SITE_ID" => $_REQUEST["site"], "TYPE" => "news"]);
-        while ($arRes = $rsIblock->Fetch()) {
-            $this->iBlock[$arRes["ID"]] = $arRes["CODE"];
-        }
-
         $arSort = [
             $this->arParams["SORT_BY"] => $this->arParams["SORT_ORDER"],
         ];
         $arFilter = [
             "IBLOCK_TYPE" => "news",
-            "IBLOCK_ID" => array_search("news", $this->iBlock),
+            "IBLOCK_CODE" => "news",
             "ACTIVE" => "Y",
             ">=PROPERTY_RANK_NEWS" => $this->arParams["SORT_VAR"],
         ];
 
-        $this->res = CIBlockElement::GetList($arSort, $arFilter, false,
-            ["nPageSize" => $this->arParams["NEWS_COUNT"]], $arSelect);
+        $this->res = CIBlockElement::GetList(
+            $arSort,
+            $arFilter,
+            false,
+            ["nPageSize" => $this->arParams["NEWS_COUNT"]],
+            $arSelect
+        );
         $this->res->SetUrlTemplates($this->arParams["DETAIL_URL"], "", $this->arParams["IBLOCK_URL"]);
     }
 
@@ -148,8 +132,7 @@ class NewsCustomComponent extends CBitrixComponent
                 $arItem["RANK_NEWS"] = 0;
             }
             if ($this->arParams["PREVIEW_TRUNCATE_LEN"] > 0) {
-                $arItem["PREVIEW_TEXT"] = $obParser->html_cut($arItem["PREVIEW_TEXT"],
-                    $this->arParams["PREVIEW_TRUNCATE_LEN"]);
+                $arItem["PREVIEW_TEXT"] = $obParser->html_cut($arItem["PREVIEW_TEXT"], $this->arParams["PREVIEW_TRUNCATE_LEN"]);
             }
 
             $this->arImgId[$arItem["ID"]] = $arItem["PREVIEW_PICTURE"];
@@ -159,13 +142,10 @@ class NewsCustomComponent extends CBitrixComponent
             $dayStart = mktime(0, 0, 0);
             if ($date > $dayStart) {
                 $arItem["DATE_CREATE_FORMAT"] = "Сегодня в " . date('H:i', $date);
+            } elseif ($date > strtotime("last monday")) {
+                $arItem["DATE_CREATE_FORMAT"] = "На этой неделе в " . date('H:i', $date);
             } else {
-                if ($date > strtotime("last monday")) {
-                    $arItem["DATE_CREATE_FORMAT"] = "На этой неделе в " . date('H:i', $date);
-                } else {
-                    $arItem["DATE_CREATE_FORMAT"] = "Более недели назад " . date('d m Y', $date) . " в " . date('H:i',
-                            $date);
-                }
+                $arItem["DATE_CREATE_FORMAT"] = "Более недели назад " . date('d m Y', $date) . " в " . date('H:i', $date);
             }
 
             $arResult["ITEMS"][$arItem["ID"]] = $arItem;
@@ -173,17 +153,7 @@ class NewsCustomComponent extends CBitrixComponent
         }
 
         if ($arResult["ITEMS"]) {
-            $string = "";
-            $total = count($this->arUsersId);
-            $count = 0;
-            foreach ($this->arUsersId as $value) {
-                $count++;
-                if ($count != $total) {
-                    $string .= $value . " | ";
-                } else {
-                    $string .= $value;
-                }
-            }
+            $string = implode(" | ", $this->arUsersId);
             $this->getElementsForResult($string);
             foreach ($arResult["ITEMS"] as $item) {
                 $arResult["ITEMS"][$item["ID"]]["CREATED_BY_LOGIN"] = $this->arUsers[$this->arUsersId[$item["ID"]]];

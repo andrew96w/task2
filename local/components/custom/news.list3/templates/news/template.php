@@ -99,14 +99,14 @@ if ($USER->IsAuthorized()) {
 					<li class="post-stats__item post-stats__item_voting-wjt">
 						<div class="voting-wjt voting-wjt_post js-post-vote" data-id="445140" data-type="2">
 							<a class="btn voting-wjt__button <?=$active?>" id="link_vote_plus<?= $arItem["ID"] ?>"
-							   href="<?= $APPLICATION->GetCurPageParam("VOTE=PLUS&ITEM_ID=" . $arItem["ID"] . "&USER_ID=" . $USER->GetID() . "&RANK_VALUE=" . $arItem["PROPERTY_RANK_NEWS_VALUE"], ["VOTE", "ITEM_ID", "USER_ID", "RANK_VALUE"], false); ?>"
+							   href="<?= $APPLICATION->GetCurPageParam("VOTE=PLUS&ITEM_ID=" . $arItem["ID"], ["VOTE", "ITEM_ID"], false); ?>"
 							   title="<? if (!$USER->IsAuthorized()) echo 'Голосовать могут только зарегистрированные пользователи Голосовать могут только пользователи с полноправным аккаунтом'; else echo "Плюс";?>">
 								<svg class="icon-svg_arrow-up" width="10" height="16"><path d="M6.802.129l-6.709 7.637c-.211.241-.037.615.289.615h3.629c.21 0 .38.167.38.372v14.875c0 .205.169.372.379.372h4.64c.21 0 .379-.167.379-.372v-14.876c0-.205.17-.372.38-.372h3.63c.325 0 .5-.373.289-.615l-6.709-7.637c-.153-.171-.427-.171-.578.001z"></path>
 								</svg>
 							</a>
 							<span class="voting-wjt__counter voting-wjt__counter_positive  js-score" title="Общий рейтинг "> <?= $arItem["PROPERTY_RANK_NEWS_VALUE"];?></span>
 							<a class="btn voting-wjt__button <?=$active?>" id="link_vote_minus<?= $arItem["ID"] ?>"
-							   href="<?= $APPLICATION->GetCurPageParam("VOTE=MINUS&ITEM_ID=" . $arItem["ID"] . "&USER_ID=" . $USER->GetID() . "&RANK_VALUE=" . $arItem["PROPERTY_RANK_NEWS_VALUE"], ["VOTE", "ITEM_ID", "USER_ID", "RANK_VALUE"], false); ?>"
+							   href="<?= $APPLICATION->GetCurPageParam("VOTE=MINUS&ITEM_ID=" . $arItem["ID"] . "&USER_ID=", ["VOTE", "ITEM_ID"], false); ?>"
 							   title="<? if (!$USER->IsAuthorized()) echo 'Голосовать могут только зарегистрированные пользователи Голосовать могут только пользователи с полноправным аккаунтом'; else echo "Минус";?>">
 								<svg class="icon-svg_arrow-down" width="10" height="16"><path d="M6.802.129l-6.709 7.637c-.211.241-.037.615.289.615h3.629c.21 0 .38.167.38.372v14.875c0 .205.169.372.379.372h4.64c.21 0 .379-.167.379-.372v-14.876c0-.205.17-.372.38-.372h3.63c.325 0 .5-.373.289-.615l-6.709-7.637c-.153-.171-.427-.171-.578.001z"></path>
 								</svg>
