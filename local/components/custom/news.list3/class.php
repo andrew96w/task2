@@ -14,7 +14,6 @@ class NewsCustomComponent extends CBitrixComponent
 {
     private $res;
     private $navComponentObject;
-    private $iBlock = [];
     private $arImgId = [];
     private $arUsersId = [];
     private $arUsers = [];
@@ -76,10 +75,11 @@ class NewsCustomComponent extends CBitrixComponent
             }
             if (!$flag) {
                 if ($_GET["VOTE"] == "PLUS") {
-                    CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false, ["RANK_NEWS" => $rankValue["VALUE"] + 1]);
+                    $rankValue = $rankValue["VALUE"] + 1;
                 } else {
-                    CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false, ["RANK_NEWS" => $rankValue["VALUE"] - 1]);
+                    $rankValue = $rankValue["VALUE"] - 1;
                 }
+                CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false, ["RANK_NEWS" => $rankValue]);
                 $rankUsers["VALUE"][] = $USER->GetID();
                 CIBlockElement::SetPropertyValuesEx($_GET["ITEM_ID"], false, ["RANK_USERS" => $rankUsers["VALUE"]]);
             }
